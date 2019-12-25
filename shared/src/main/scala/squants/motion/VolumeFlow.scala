@@ -9,7 +9,7 @@
 package squants.motion
 
 import squants.{ Seconds, _ }
-import squants.space.{ CubicFeet, CubicMeters, UsGallons }
+import squants.space.{ CubicFeet, CubicMeters, UsGallons, Litres, Millilitres, Microlitres, Nanolitres }
 import squants.time._
 
 /**
@@ -28,6 +28,10 @@ final class VolumeFlow private (val value: Double, val unit: VolumeFlowRateUnit)
   protected[squants] def time = Seconds(1)
 
   def toCubicMetersPerSecond = to(CubicMetersPerSecond)
+  def toLitresPerSecond = to(LitresPerSecond)
+  def toMillilitresPerSecond = to(MillilitresPerSecond)
+  def toMicrolitresPerSecond = to(MicrolitresPerSecond)
+  def toNanolitresPerSecond = to(NanolitresPerSecond)
   def toCubicFeetPerHour = to(CubicFeetPerHour)
   def toGallonsPerDay = to(GallonsPerDay)
   def toGallonsPerHour = to(GallonsPerHour)
@@ -41,7 +45,7 @@ object VolumeFlow extends Dimension[VolumeFlow] {
   def name = "VolumeFlow"
   def primaryUnit = CubicMetersPerSecond
   def siUnit = CubicMetersPerSecond
-  def units = Set(CubicMetersPerSecond, CubicFeetPerHour, GallonsPerDay, GallonsPerHour, GallonsPerMinute, GallonsPerSecond)
+  def units = Set(CubicMetersPerSecond, LitresPerSecond, MillilitresPerSecond, MicrolitresPerSecond, NanolitresPerSecond, CubicFeetPerHour, GallonsPerDay, GallonsPerHour, GallonsPerMinute, GallonsPerSecond)
 }
 
 trait VolumeFlowRateUnit extends UnitOfMeasure[VolumeFlow] with UnitConverter {
@@ -50,6 +54,26 @@ trait VolumeFlowRateUnit extends UnitOfMeasure[VolumeFlow] with UnitConverter {
 
 object CubicMetersPerSecond extends VolumeFlowRateUnit with PrimaryUnit with SiUnit {
   val symbol = "m³/s"
+}
+
+object LitresPerSecond extends VolumeFlowRateUnit {
+  val symbol = "l/s"
+  val conversionFactor = Litres.conversionFactor / CubicMeters.conversionFactor
+}
+
+object MillilitresPerSecond extends VolumeFlowRateUnit {
+  val symbol = "ml/s"
+  val conversionFactor = Millilitres.conversionFactor / CubicMeters.conversionFactor
+}
+
+object MicrolitresPerSecond extends VolumeFlowRateUnit {
+  val symbol = "µl/s"
+  val conversionFactor = Microlitres.conversionFactor / CubicMeters.conversionFactor
+}
+
+object NanolitresPerSecond extends VolumeFlowRateUnit {
+  val symbol = "nl/s"
+  val conversionFactor = Nanolitres.conversionFactor / CubicMeters.conversionFactor
 }
 
 object CubicFeetPerHour extends VolumeFlowRateUnit {
@@ -79,6 +103,10 @@ object GallonsPerSecond extends VolumeFlowRateUnit {
 
 object VolumeFlowConversions {
   lazy val cubicMeterPerSecond = CubicMetersPerSecond(1)
+  lazy val litrePerSecond = LitresPerSecond(1)
+  lazy val millilitrePerSecond = MillilitresPerSecond(1)
+  lazy val microlitrePerSecond = MicrolitresPerSecond(1)
+  lazy val nanolitrePerSecond = NanolitresPerSecond(1)
   lazy val cubicFeetPerHour = CubicFeetPerHour(1)
   lazy val gallonPerDay = GallonsPerDay(1)
   lazy val gallonPerHour = GallonsPerHour(1)
@@ -87,6 +115,10 @@ object VolumeFlowConversions {
 
   implicit class VolumeFlowConversions[A](n: A)(implicit num: Numeric[A]) {
     def cubicMetersPerSecond = CubicMetersPerSecond(n)
+	def litresPerSecond = LitresPerSecond(n)
+	def millilitresPerSecond = MillilitresPerSecond(n)
+	def microlitresPerSecond = MicrolitresPerSecond(n)
+	def nanolitresPerSecond = NanolitresPerSecond(n)
     def cubicFeetPerHour = CubicFeetPerHour(n)
     def gallonsPerDay = GallonsPerDay(n)
     def gallonsPerHour = GallonsPerHour(n)

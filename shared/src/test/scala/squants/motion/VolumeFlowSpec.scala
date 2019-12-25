@@ -9,7 +9,7 @@
 package squants.motion
 
 import org.scalatest.{ Matchers, FlatSpec }
-import squants.space.CubicMeters
+import squants.space.{CubicMeters, Litres }
 import squants.time.Seconds
 import squants.{ QuantityParseException, CustomMatchers }
 
@@ -24,6 +24,10 @@ class VolumeFlowSpec extends FlatSpec with Matchers with CustomMatchers {
 
   it should "create values using UOM factories" in {
     CubicMetersPerSecond(1).toCubicMetersPerSecond should be(1)
+	LitresPerSecond(1).toLitresPerSecond should be(1)
+	MillilitresPerSecond(1).toMillilitresPerSecond should be(1)
+	MicrolitresPerSecond(1).toMicrolitresPerSecond should be(1)
+	NanolitresPerSecond(1).toNanolitresPerSecond should be(1)
     CubicFeetPerHour(1).toCubicFeetPerHour should be(1)
     GallonsPerDay(1).toGallonsPerDay should be(1)
     GallonsPerHour(1).toGallonsPerHour should be(1)
@@ -33,6 +37,10 @@ class VolumeFlowSpec extends FlatSpec with Matchers with CustomMatchers {
 
   it should "create values from properly formatted Strings" in {
     VolumeFlow("10.22 m³/s").get should be(CubicMetersPerSecond(10.22))
+	VolumeFlow("10.22 l/s").get should be(LitresPerSecond(10.22))
+	VolumeFlow("10.22 ml/s").get should be(MillilitresPerSecond(10.22))
+	VolumeFlow("10.22 µl/s").get should be(MicrolitresPerSecond(10.22))
+	VolumeFlow("10.22 nl/s").get should be(NanolitresPerSecond(10.22))
     VolumeFlow("10.22 ft³/hr").get should be(CubicFeetPerHour(10.22))
     VolumeFlow("10.22 GPD").get should be(GallonsPerDay(10.22))
     VolumeFlow("10.22 GPH").get should be(GallonsPerHour(10.22))
@@ -45,6 +53,10 @@ class VolumeFlowSpec extends FlatSpec with Matchers with CustomMatchers {
   it should "properly convert to all supported Units of Measure" in {
     val x = CubicMetersPerSecond(10.22)
     x.toCubicMetersPerSecond should be(10.22)
+	x.toLitresPerSecond should be(CubicMeters(10.22).toLitres / Seconds(1).toSeconds)
+	x.toMillilitresPerSecond should be(CubicMeters(10.22).toMillilitres / Seconds(1).toSeconds)
+	x.toMicrolitresPerSecond should be(CubicMeters(10.22).toMicrolitres / Seconds(1).toSeconds)
+	x.toNanolitresPerSecond should be(CubicMeters(10.22).toNanolitres / Seconds(1).toSeconds)
     x.toCubicFeetPerHour should be(CubicMeters(10.22).toCubicFeet / Seconds(1).toHours +- 0.00000001)
     x.toGallonsPerDay should be(CubicMeters(10.22).toUsGallons / Seconds(1).toDays +- 0.00000001)
     x.toGallonsPerHour should be(CubicMeters(10.22).toUsGallons / Seconds(1).toHours)
@@ -54,6 +66,10 @@ class VolumeFlowSpec extends FlatSpec with Matchers with CustomMatchers {
 
   it should "return properly formatted strings for all supported Units of Measure" in {
     CubicMetersPerSecond(1).toString(CubicMetersPerSecond) should be("1.0 m³/s")
+	LitresPerSecond(1).toString(LitresPerSecond) should be("1.0 l/s")
+	MillilitresPerSecond(1).toString(MillilitresPerSecond) should be("1.0 ml/s")
+	MicrolitresPerSecond(1).toString(MicrolitresPerSecond) should be("1.0 µl/s")
+	NanolitresPerSecond(1).toString(NanolitresPerSecond) should be("1.0 nl/s")
     CubicFeetPerHour(1).toString(CubicFeetPerHour) should be("1.0 ft³/hr")
     GallonsPerDay(1).toString(GallonsPerDay) should be("1.0 GPD")
     GallonsPerHour(1).toString(GallonsPerHour) should be("1.0 GPH")
@@ -63,6 +79,7 @@ class VolumeFlowSpec extends FlatSpec with Matchers with CustomMatchers {
 
   it should "return Volume when multiplied by Time" in {
     CubicMetersPerSecond(1) * Seconds(1) should be(CubicMeters(1))
+	LitresPerSecond(1) * Seconds(1) should be(Litres(1))
   }
 
   behavior of "VolumeFlowConversions"
@@ -71,6 +88,10 @@ class VolumeFlowSpec extends FlatSpec with Matchers with CustomMatchers {
     import VolumeFlowConversions._
 
     cubicMeterPerSecond should be(CubicMetersPerSecond(1))
+	litrePerSecond should be(LitresPerSecond(1))
+	millilitrePerSecond should be(MillilitresPerSecond(1))
+	microlitrePerSecond should be(MicrolitresPerSecond(1))
+	nanolitrePerSecond should be(NanolitresPerSecond(1))
     cubicFeetPerHour should be(CubicFeetPerHour(1))
     gallonPerDay should be(GallonsPerDay(1))
     gallonPerHour should be(GallonsPerHour(1))
@@ -83,6 +104,10 @@ class VolumeFlowSpec extends FlatSpec with Matchers with CustomMatchers {
 
     val d = 10.22d
     d.cubicMetersPerSecond should be(CubicMetersPerSecond(d))
+	d.litresPerSecond should be(LitresPerSecond(d))
+	d.millilitresPerSecond should be(MillilitresPerSecond(d))
+	d.microlitresPerSecond should be(MicrolitresPerSecond(d))
+	d.nanolitresPerSecond should be(NanolitresPerSecond(d))
     d.cubicFeetPerHour should be(CubicFeetPerHour(d))
     d.gallonsPerDay should be(GallonsPerDay(d))
     d.gallonsPerHour should be(GallonsPerHour(d))
